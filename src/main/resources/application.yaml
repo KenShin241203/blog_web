@@ -1,0 +1,20 @@
+server:
+ port: 8088
+ servlet:
+  context-path: /
+
+spring:
+  datasource:
+    url: "jdbc:mysql://localhost:3306/blog_web"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+jwt:
+  signerKey: "hlw+pFA+F59TW3qwIEcCjVhOCqBqVoXvKzm637gY1HBjWY/SO/N3i7HW9vYboyVv"
+  valid-duration: 15
+  refreshable-duration: 30
