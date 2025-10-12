@@ -1,0 +1,20 @@
+package com.blogweb.project.blogweb_be.dto.request.comment;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class CommentCreationRequest {
+
+    String content;
+    String userId;
+    String PostId;
+}
