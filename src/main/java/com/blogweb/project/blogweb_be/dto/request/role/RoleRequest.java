@@ -1,30 +1,22 @@
-package com.blogweb.project.blogweb_be.entity;
+package com.blogweb.project.blogweb_be.dto.request.role;
 
 import java.util.Set;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-@Entity
-@Getter
-@Setter
-@Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role {
+public class RoleRequest {
 
-    @Id
     String name;
     String description;
-    @ManyToMany
-    Set<Permission> permissions;
+    Set<String> permissions;
 }
