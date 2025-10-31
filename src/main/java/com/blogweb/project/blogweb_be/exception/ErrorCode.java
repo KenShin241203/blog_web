@@ -22,6 +22,8 @@ public enum ErrorCode {
     Tag_EXISTED(4001, "Tag already exists", HttpStatus.BAD_REQUEST),
     //Comment
     Comment_NOT_FOUND(3001, "Comment not found", HttpStatus.NOT_FOUND),
+    //Comment
+    Role_NOT_FOUND(4001, "Role not found", HttpStatus.NOT_FOUND),
     //Validation
     Dob_INVALID(1005, "Day of birth must be at least {min}", HttpStatus.BAD_REQUEST),
     //Authentication
