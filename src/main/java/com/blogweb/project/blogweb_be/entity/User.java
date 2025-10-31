@@ -43,4 +43,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Comment> comments = new ArrayList<>();
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 }

@@ -22,7 +22,6 @@ public class UserResponse {
     String id;
     String username;
     String email;
-    String password;
 
     Set<Role> roles;
 

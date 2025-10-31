@@ -1,7 +1,11 @@
 package com.blogweb.project.blogweb_be.service;
 
+import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,15 +33,23 @@ public class UserService {
     UserMapper userMapper;
     RoleRepository roleRepository;
 
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getAllUser() {
         return userRepository.findAll().stream()
                 .map(user -> userMapper.mapToUserResponse(user))
                 .toList();
     }
 
+    @PostAuthorize("returnObject.username == authentication.name or hasRole('ADMIN')")
     public UserResponse getUserById(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userMapper.mapToUserResponse(user);
+    }
+
+    public UserResponse getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String name = context.getAuthentication().getName();
+        return userMapper.mapToUserResponse(userRepository.findByUsername(name).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 
     public UserResponse createUser(UserCreationRequest request) {
@@ -47,7 +59,8 @@ public class UserService {
         User user = userMapper.mapToUser(request);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        // user.setPassword(request.getPassword());
+        var roleUser = roleRepository.findById("USER");
+        user.setRoles(new HashSet<>(roleUser.stream().toList()));
         return userMapper.mapToUserResponse(userRepository.save(user));
     }
 
