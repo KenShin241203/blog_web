@@ -3,6 +3,8 @@ package com.blogweb.project.blogweb_be.service;
 import java.util.HashSet;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.blogweb.project.blogweb_be.dto.request.post.PostCreateRequest;
@@ -34,8 +36,12 @@ public class PostService {
     UserRepository userRepository;
     TagRepository tagRepository;
 
+    @PreAuthorize("hasAuthority('CREATE_BLOG')")
     public PostResponse createPost(PostCreateRequest request) {
-        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        log.info("Create new Post");
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         List<Tag> tag = tagRepository.findAllById(request.getTagName());
         Post post = postMapper.maptoPost(request);
         post.setTags(new HashSet<>(tag));

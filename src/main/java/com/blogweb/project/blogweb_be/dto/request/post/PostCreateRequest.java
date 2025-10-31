@@ -19,5 +19,4 @@ public class PostCreateRequest {
     String title;
     String content;
     Set<String> tagName;
-    String userId;
 }
